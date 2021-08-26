@@ -1,0 +1,52 @@
+<html lang="en">
+  <head>
+    <title>Phyllo Sample App</title>
+    <link rel="stylesheet" type="text/css" href="/static/style.css"  />
+    <script type="text/javascript" src="./dist/phylloConnectSDK.js"></script>
+    <script type="text/javascript" src="./dist/phylloAPIHelper.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      const phylloSDKConnect=async(workPlatformId = null)=> {
+        try {
+          const env = "sandbox";
+          const timeStamp = new Date();
+          const isExistingUser = document.getElementById("isExistingUser").checked;
+           const userId = await createUser("DigiQT",timeStamp.getTime(),isExistingUser);
+           const token = await createUserToken(userId,"http://localhost:3000/status/");
+          const appName = "DigiQT";
+         console.log(PhylloConnectSDK.clientConnect);
+          const phylloConnectURL =  await PhylloConnectSDK.clientConnect(
+            env,
+            userId,
+            token,
+            appName,
+            workPlatformId
+          );
+          window.location.href =phylloConnectURL;
+        } catch (err) {
+          console.log(err);
+        }
+      }
+    </script>
+      <div class="screen_box">
+        <div class="top_navbar">
+            <h2>Phyllo Sample App</h2>
+        </div>
+        <div class="content_text_box">
+            <div class="content_data">
+                <div class="btn_group">
+                    <button onclick="phylloSDKConnect()">Connect Platform Account(s)</button>
+                    <button onclick="phylloSDKConnect('9bb8913b-ddd9-430b-a66a-d74d846e6c66')">Connect Instagram using Phyllo</button>
+                    <button onclick="phylloSDKConnect('14d9ddf5-51c6-415e-bde6-f8ed36ad7054')">Connect YouTube using Phyllo</button>
+                    <div class="check_box">
+                        <input type="checkbox"   id="isExistingUser">
+                        <label for="isExistingUser">Existing User</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
