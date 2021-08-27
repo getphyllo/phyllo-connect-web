@@ -1,9 +1,13 @@
 <html lang="en">
   <head>
     <title>Phyllo Sample App</title>
+        <link rel="icon" href="/static/favicon_64x64.svg" />
+        <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="/static/style.css"  />
     <script type="text/javascript" src="./dist/phylloConnectSDK.js"></script>
     <script type="text/javascript" src="./dist/phylloAPIHelper.js"></script>
+
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
   </head>
   <body>
@@ -14,7 +18,7 @@
           const timeStamp = new Date();
           const isExistingUser = document.getElementById("isExistingUser").checked;
            const userId = await createUser("DigiQT",timeStamp.getTime(),isExistingUser);
-           const token = await createUserToken(userId,"http://localhost:3000/status/");
+           const token = await createUserToken(userId,"https://connect-sandbox.getphyllo.com/status/");
           const appName = "DigiQT";
          console.log(PhylloConnectSDK.clientConnect);
           const phylloConnectURL =  await PhylloConnectSDK.clientConnect(
