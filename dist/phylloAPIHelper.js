@@ -2,8 +2,8 @@ const PHYLLO_BASE_URL = "https://api-sandbox.getphyllo.com";
 const URL_CREATE_USER_TOKEN = "/v1/sdk-tokens";
 const URL_CREATE_USER = "/v1/users";
 
-const PHYLLO_CLIENT_ID = "aaea7918-31a1-49b7-a201-d0034e5aa30d";
-const PHYLLO_SECRET_ID = "eabcc3db-6b89-4bfe-a333-d38be888ab78";
+const PHYLLO_CLIENT_ID = "<CLIENT_ID>";
+const PHYLLO_SECRET_ID = "<CLIENT_SECRET>";
 
 const getAxiosInstance = () => {
   const api = axios.create({
