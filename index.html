@@ -17,18 +17,21 @@
           const env = "sandbox";
           const timeStamp = new Date();
           const isExistingUser = document.getElementById("isExistingUser").checked;
-           const userId = await createUser("DigiQT",timeStamp.getTime(),isExistingUser);
-           const token = await createUserToken(userId,"https://connect-sandbox.getphyllo.com/status/");
+          const userId = await createUser("DigiQT",timeStamp.getTime(),isExistingUser);
+          const token = await createUserToken(userId,"https://connect-sandbox.getphyllo.com/status/");
           const appName = "DigiQT";
-         console.log(PhylloConnectSDK.clientConnect);
-          const phylloConnectURL =  await PhylloConnectSDK.clientConnect(
+        
+          const config = {
             env,
             userId,
             token,
             appName,
-            workPlatformId
-          );
-          window.location.href =phylloConnectURL;
+            workPlatformId,
+            redirectURL : 'https://www.google.com'
+          }
+          const phyllo = PhylloConnectSDK.initialize(config);
+          phyllo.open();
+
         } catch (err) {
           console.log(err);
         }
