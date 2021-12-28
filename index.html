@@ -17,9 +17,9 @@
           const env = "sandbox";
           const timeStamp = new Date();
           const isExistingUser = document.getElementById("isExistingUser").checked;
-          const userId = await createUser("DigiQT",timeStamp.getTime(),isExistingUser);
+          const userId = await createUser("SampleApp",timeStamp.getTime(),isExistingUser);
           const token = await createUserToken(userId,"https://connect-sandbox.getphyllo.com/status/");
-          const appName = "DigiQT";
+          const appName = "Sample App";
         
           const config = {
             env,
