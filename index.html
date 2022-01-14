@@ -27,7 +27,7 @@
             token,
             appName,
             workPlatformId,
-            redirectURL : 'http://localhost:3000'
+            redirectURL : window.location.href
           }
           const phyllo = PhylloConnectSDK.initialize(config);
           phyllo.open();
