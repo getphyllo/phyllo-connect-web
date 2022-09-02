@@ -50,6 +50,7 @@
             color: #fff;
             background-color: #524fa1;
             border-radius: 5px;
+            cursor: pointer;
         }
         .check_box{
             display: flex;
@@ -61,9 +62,14 @@
             width: 20px;
             height: 20px;
             margin-right: 10px;
+            cursor: pointer;
+        }
+        .check_box label{
+            cursor: pointer;
         }
         @media (max-width: 450px) {
             .screen_box{
                 width: 100%;
                 height: 100%;
             }
+        }
