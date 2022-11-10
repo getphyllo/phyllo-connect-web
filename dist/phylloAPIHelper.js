@@ -8,12 +8,14 @@ const URL_CREATE_USER = "/v1/users";
 const PHYLLO_CLIENT_ID = "<CLIENT_ID>";
 const PHYLLO_SECRET_ID = "<CLIENT_SECRET>";
 
+// encode client_id:secret to base-64
+const AUTH_KEY = window.btoa(PHYLLO_CLIENT_ID+":"+PHYLLO_SECRET_ID);
+
 const getAxiosInstance = () => {
   const api = axios.create({
     baseURL: PHYLLO_BASE_URL,
-    auth: {
-      username: PHYLLO_CLIENT_ID,
-      password: PHYLLO_SECRET_ID,
+    headers: {
+      'Authorization':'Basic ' + AUTH_KEY
     },
   });
   return api;
@@ -38,7 +40,7 @@ const createUser = async (name, externalId, isExistingUser) => {
   }
 };
 
-const createUserToken = async (userId, redirectURL) => {
+const createUserToken = async (userId) => {
   if (!userId) {
     let err = new Error("User id cannot be blank or null");
     throw err;

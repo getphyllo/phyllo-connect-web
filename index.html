@@ -1,59 +1,122 @@
 <html lang="en">
   <head>
     <title>Phyllo Sample App</title>
-        <link rel="icon" href="/static/favicon_64x64.svg" />
-        <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/static/style.css"  />
-    <script type="text/javascript" src="https://cdn.getphyllo.com/connect/v1/connect-initialize.js"></script>
-    <script type="text/javascript" src="./dist/phylloAPIHelper.js"></script>
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <link rel="icon" href="/static/favicon_64x64.svg" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/static/style.css" />
+    <script
+      defer
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+    ></script>
+    <!-- Phyllo Connect SDK CDN -->
+    <script
+      defer
+      src="https://cdn.getphyllo.com/connect/v2/phyllo-connect.js"
+    ></script>
+    <script
+      defer
+      type="text/javascript"
+      src="./dist/phylloAPIHelper.js"
+    ></script>
   </head>
-  <body>
-    <script type="text/javascript">
-      const phylloSDKConnect=async(workPlatformId = null)=> {
-        try {
-          const env = "sandbox";
-          const timeStamp = new Date();
-          const isExistingUser = document.getElementById("isExistingUser").checked;
-          const userId = await createUser("SampleApp",timeStamp.getTime(),isExistingUser);
-          const token = await createUserToken(userId,"https://connect-sandbox.getphyllo.com/status/");
-          const appName = "Sample App";
-        
-          const config = {
-            env,
-            userId,
-            token,
-            appName,
-            workPlatformId,
-            redirectURL : window.location.href
-          }
-          const phyllo = PhylloConnectSDK.initialize(config);
-          phyllo.open();
 
+  <body>
+    <script defer type="text/javascript">
+      const phylloSDKConnect = async (workPlatformId = null) => {
+        try {
+          const env = "sandbox"; // the mode in which you want to use the SDK,  `sandbox` or `production`
+          const uniqId = new Date().getTime(); // Unique ID for the user supplied by you.
+          const isExistingUser =
+            document.getElementById("isExistingUser").checked;
+          const userId = await createUser(
+            "phyllo-user",
+            uniqId,
+            isExistingUser
+          );
+          const token = await createUserToken(userId);
+          const appName = "Sample App";
+
+          const config = {
+            environment: env,
+            userId: userId,
+            token: token,
+            clientDisplayName: appName,
+            workPlatformId:workPlatformId
+          };
+          const phylloConnect = window.PhylloConnect.initialize(config);
+
+          // callbacks
+          phylloConnect.on(
+            "accountConnected",
+            (accountId, workplatformId, userId) => {
+              // gives the successfully connected account ID and work platform ID for the given user ID
+              console.log(
+                `onAccountConnected: ${accountId}, ${workplatformId}, ${userId}`
+              );
+            }
+          );
+          phylloConnect.on(
+            "accountDisconnected",
+            (accountId, workplatformId, userId) => {
+              // gives the successfully disconnected account ID and work platform ID for the given user ID
+              console.log(
+                `onAccountDisconnected: ${accountId}, ${workplatformId}, ${userId}`
+              );
+            }
+          );
+          phylloConnect.on("tokenExpired", (userId) => {
+            // gives the user ID for which the token has expired
+            console.log(`onTokenExpired: ${userId}`); // the SDK closes automatically in case the token has expired, and you need to handle this by showing an appropriate UI and messaging to the users
+          });
+          phylloConnect.on("exit", (reason, userId) => {
+            // indicates that the user with given user ID has closed the SDK and gives an appropriate reason for it
+            console.log(`onExit: ${reason}, ${userId}`);
+          });
+          phylloConnect.on(
+            "connectionFailure",
+            (reason, workplatformId, userId) => {
+              // optional, indicates that the user with given user ID has attempted connecting to the work platform but resulted in a failure and gives an appropriate reason for it
+              console.log(
+                `onConnectionFailure: ${reason}, ${workplatformId}, ${userId}`
+              );
+            }
+          );
+
+          phylloConnect.open();
         } catch (err) {
           console.log(err);
         }
-      }
+      };
     </script>
-      <div class="screen_box">
-        <div class="top_navbar">
-            <h2>Phyllo Sample App</h2>
-        </div>
-        <div class="content_text_box">
-            <div class="content_data">
-                <div class="btn_group">
-                    <button onclick="phylloSDKConnect()">Connect Platform Account(s)</button>
-                    <button onclick="phylloSDKConnect('9bb8913b-ddd9-430b-a66a-d74d846e6c66')">Connect Instagram using Phyllo</button>
-                    <button onclick="phylloSDKConnect('14d9ddf5-51c6-415e-bde6-f8ed36ad7054')">Connect YouTube using Phyllo</button>
-                    <div class="check_box">
-                        <input type="checkbox"   id="isExistingUser">
-                        <label for="isExistingUser">Existing User</label>
-                    </div>
-                </div>
+    <div class="screen_box">
+      <div class="top_navbar">
+        <h2>Phyllo Sample App</h2>
+      </div>
+      <div class="content_text_box">
+        <div class="content_data">
+          <div class="btn_group">
+            <button onclick="phylloSDKConnect()">
+              Connect Platform Account(s)
+            </button>
+            <button
+              onclick="phylloSDKConnect('9bb8913b-ddd9-430b-a66a-d74d846e6c66')"
+            >
+              Connect Instagram using Phyllo
+            </button>
+            <button
+              onclick="phylloSDKConnect('14d9ddf5-51c6-415e-bde6-f8ed36ad7054')"
+            >
+              Connect YouTube using Phyllo
+            </button>
+            <div class="check_box">
+              <input type="checkbox" id="isExistingUser" />
+              <label for="isExistingUser">Existing User</label>
             </div>
+          </div>
         </div>
+      </div>
     </div>
   </body>
 </html>
