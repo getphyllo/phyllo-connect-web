@@ -2,7 +2,7 @@
 // Base url For sandbox  
 const PHYLLO_BASE_URL = "https://api.sandbox.getphyllo.com";
 
-const URL_CREATE_USER_TOKEN = "/v1/sdk-tokens";
+const URL_CREATE_SDK_TOKEN = "/v1/sdk-tokens";
 const URL_CREATE_USER = "/v1/users";
 
 const PHYLLO_CLIENT_ID = "<CLIENT_ID>";
@@ -40,14 +40,14 @@ const createUser = async (name, externalId, isExistingUser) => {
   }
 };
 
-const createUserToken = async (userId) => {
+const createSDKToken = async (userId) => {
   if (!userId) {
     let err = new Error("User id cannot be blank or null");
     throw err;
   }
   try {
     const api = getAxiosInstance();
-    let response = await api.post(URL_CREATE_USER_TOKEN, {
+    let response = await api.post(URL_CREATE_SDK_TOKEN, {
       user_id: userId,
       products: ["IDENTITY", "ENGAGEMENT"],
     });
